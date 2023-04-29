@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # changes to the configuration file, disable authentication
 
 file_line { 'Declare identity file':
