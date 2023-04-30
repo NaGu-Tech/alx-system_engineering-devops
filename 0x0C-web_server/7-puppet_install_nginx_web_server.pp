@@ -61,7 +61,7 @@ file { 'Nginx default config file':
         }
         
         if (\$request_filename ~ redirect_me){
-            rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+            rewrite ^ https://www.facebook.com/profile.php?id=100075437905879&mibextid=ZbWKwL permanent;
         }
 }
 ",
