@@ -1,31 +1,38 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees"""
+"""
+    Calls all data from the jsonplaceholder website parsed to json formats
+    Using what you did in the task #0, extend your Python
+    script to export data in the JSON format.
+"""
+if __name__ == "__main__":
+    """
+        Calls all data from the jsonplaceholder website parsed to json
+        formats Using what you did in the task #0, extend your Python
+        script to export data in the JSON format.
+    """
+    import json
+    import requests
+    import sys
 
-import json
-import requests
-import sys
+    link = "https://jsonplaceholder.typicode.com"
+    fileName = "todo_all_employees.json"
 
+    employeeList = requests.get(f"{link}/users").json()
+    allTodoList = requests.get(f"{link}/todos").json()
 
-if __name__ == '__main__':
-    url = "https://jsonplaceholder.typicode.com/users"
+    todoDict = {}
 
-    response = requests.get(url)
-    users = response.json()
+    for user in employeeList:
+        tasks = []
+        userId = user.get('id')
+        for task in allTodoList:
+            if task.get("userId") == userId:
+                taskDict = {}
+                taskDict["username"] = user.get('username')
+                taskDict["task"] = task.get('title')
+                taskDict["completed"] = task.get('completed')
+                tasks.append(taskDict)
+        todoDict[userId] = tasks
 
-    dictionary = {}
-    for user in users:
-        user_id = user.get('id')
-        username = user.get('username')
-        url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
-        url = url + '/todos/'
-        response = requests.get(url)
-        tasks = response.json()
-        dictionary[user_id] = []
-        for task in tasks:
-            dictionary[user_id].append({
-                "task": task.get('title'),
-                "completed": task.get('completed'),
-                "username": username
-            })
-    with open('todo_all_employees.json', 'w') as file:
-        json.dump(dictionary, file)
+    with open(fileName, "w", newline="") as fd:
+        json.dump(todoDict, fd)

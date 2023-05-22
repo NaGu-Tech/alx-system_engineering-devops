@@ -1,29 +1,36 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees"""
+"""
+    Calls to data from the jsonplaceholder website parsed to json formats
+    from task 0, extend your Python script to export data in the JSON format.
+"""
+if __name__ == "__main__":
+    """
+        Calls to data from the jsonplaceholder website
+        parsed to json formats from task 0, extend your
+        Python script to export data in the JSON format.
+    """
+    import json
+    import requests
+    import sys
 
-import json
-import requests
-import sys
+    EMPLOYEE_ID = sys.argv[1]
 
+    link = "https://jsonplaceholder.typicode.com/users"
+    userResponse = requests.get(f"{link}/{EMPLOYEE_ID}")
+    EMPLOYEE_NAME = userResponse.json().get("name")
+    fileName = "{}.json".format(EMPLOYEE_ID)
 
-if __name__ == '__main__':
-    employeeId = sys.argv[1]
-    baseUrl = "https://jsonplaceholder.typicode.com/users"
-    url = baseUrl + "/" + employeeId
+    todoList = requests.get(f"{link}/{EMPLOYEE_ID}/todos").json()
 
-    response = requests.get(url)
-    username = response.json().get('username')
+    tasks = []
+    for task in todoList:
+        taskDict = {}
+        taskDict["task"] = task.get('title')
+        taskDict["completed"] = task.get('completed')
+        taskDict["username"] = EMPLOYEE_NAME
+        tasks.append(taskDict)
 
-    todoUrl = url + "/todos"
-    response = requests.get(todoUrl)
-    tasks = response.json()
+    todoDict = {EMPLOYEE_ID: tasks}
 
-    dictionary = {employeeId: []}
-    for task in tasks:
-        dictionary[employeeId].append({
-            "task": task.get('title'),
-            "completed": task.get('completed'),
-            "username": username
-        })
-    with open('{}.json'.format(employeeId), 'w') as filename:
-        json.dump(dictionary, filename)
+    with open(fileName, "w", newline="") as fd:
+        json.dump(todoDict, fd)
