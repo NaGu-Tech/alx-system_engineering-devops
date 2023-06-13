@@ -5,5 +5,5 @@
 
 Host*
 	PasswordAuthentication no
-	#HostbasedAuthentication no
+#	HostbasedAuthentication no
 	IdentityFile ~/.ssh/school
