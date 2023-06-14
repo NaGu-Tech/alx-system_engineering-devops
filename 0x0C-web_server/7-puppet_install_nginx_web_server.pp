@@ -61,7 +61,7 @@ file { 'Nginx default config file':
         }
         
         if (\$request_filename ~ redirect_me){
-            rewrite ^ https://www.facebook.com/profile.php?id=100075437905879&mibextid=ZbWKwL permanent;
+            rewrite ^ https://www.linkedin.com/in/chikaodiri-agu-240053172 permanent;
         }
 }
 ",
