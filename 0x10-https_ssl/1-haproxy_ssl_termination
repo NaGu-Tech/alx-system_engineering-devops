@@ -44,8 +44,8 @@ frontend myfrontend
 backend mybackend
 	balance roundrobin
 	http-request redirect scheme https code 301 if !{ ssl_fc }
-	server 183659-web-01 100.25.21.123:80 check
-        server 183659-web-02 100.26.226.43:80 check
+	server 183576-web-01 100.25.203.137:80 check
+        server 183576-web-02 100.25.129.141:80 check
 
 backend letsencrypt-backend
 	server letsencrypt 127.0.0.1:8888
